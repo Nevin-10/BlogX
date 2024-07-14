@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/blog")
+@RestController
+
 public class BlogController {
 
     private final BlogService blogService;
@@ -21,13 +21,13 @@ public class BlogController {
 
     //Controller for accepting blog entry
 
-    @PostMapping("/create")
+    @PostMapping("/blog/create")
     public ResponseEntity<String> createBlog(@RequestBody Blog blog) {
         blogService.createBlog(blog);
         return ResponseEntity.ok("Success");
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/blog/get/{id}")
     public ResponseEntity<Blog> getBlog(@PathVariable int id) {
         Blog blog=blogService.getBlog(id);
         if(blog==null) {
@@ -37,13 +37,13 @@ public class BlogController {
         return ResponseEntity.ok(blog);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/blog/getAll")
     public ResponseEntity<List<Blog>> getAllBlog() {
         List<Blog> blogs=blogService.getAll();
         return ResponseEntity.ok(blogs);
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/blog/update/{id}")
     public ResponseEntity<String> updateBlog(@PathVariable int id, @RequestBody Blog newblog) {
         Blog blog=blogService.getBlog(id);
         if(blog!=null) {
@@ -58,7 +58,7 @@ public class BlogController {
     }
 
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/blog/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
         blogService.deleteBlog(id);
         return ResponseEntity.ok("Success");
