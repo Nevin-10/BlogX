@@ -48,17 +48,36 @@ public class DemoSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Disable security for testing purposes
-        http
-                .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .anyRequest().permitAll()
-                )
-                .csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable();
+        //Restrict access based on the http request, no access directly divert to login
+        http.authorizeRequests(configurer ->
+                        configurer
+                                .requestMatchers("/").hasAnyRole("EMPLOYEE", "ADMIN" ,"MANAGER")
+                                .requestMatchers("/leaders/**").hasRole("MANAGER")
+                                .requestMatchers("/blog/**").hasRole("ADMIN")
+                                .requestMatchers("/register").permitAll() //Opens /register url
+                                .requestMatchers("/entries").permitAll() //Opens /register url
 
+                                .anyRequest().authenticated()
+                )
+
+                .formLogin(form ->
+
+                        form.loginPage("/showLoginForm")
+                                .loginProcessingUrl("/authenticateTheUser") //To check email and password
+                                .permitAll() //Everyone can access the login page,no authorization needed
+
+                )
+                .logout(logout -> logout.permitAll())//Expose /logout url for logging out, Spring security gives this.
+                .exceptionHandling(configurer->configurer.accessDeniedPage("/accessDenied"));
+        //Need to post to logout, no need to define in controller.
         return http.build();
+
+
+
+
     }
+
+
 
 
 
