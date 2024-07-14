@@ -27,7 +27,7 @@ public class BlogController {
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping("/get/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Blog> getBlog(@PathVariable int id) {
         Blog blog=blogService.getBlog(id);
         if(blog==null) {
@@ -43,7 +43,7 @@ public class BlogController {
         return ResponseEntity.ok(blogs);
     }
 
-    @GetMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<String> updateBlog(@PathVariable int id, @RequestBody Blog newblog) {
         Blog blog=blogService.getBlog(id);
         if(blog!=null) {
