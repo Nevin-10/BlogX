@@ -24,24 +24,23 @@ public class BlogDAOImpl implements BlogDAO {
 
     @Override
     public Blog getBlog(int id) {
-        Blog blog = em.find(Blog.class, id);
-        return blog;
+        return em.find(Blog.class, id);
 
     }
 
     @Override
     public List<Blog> getAll() {
-        List<Blog> blogs = em.createQuery("from blog", Blog.class).getResultList();
-        return blogs;
+        return em.createQuery("from blog", Blog.class).getResultList();
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         Blog blog = em.find(Blog.class, id);
         em.remove(blog);
 
     }
-
+    @Transactional
     @Override
     public void update(Blog blog) {
         em.merge(blog);
