@@ -53,7 +53,7 @@ public class DemoSecurityConfig {
                         configurer
                                 .requestMatchers("/").hasAnyRole("EMPLOYEE", "ADMIN" ,"MANAGER")
                                 .requestMatchers("/leaders/**").hasRole("MANAGER")
-                                .requestMatchers("/blog/**").hasRole("ADMIN")
+                                .requestMatchers("/blog/**").permitAll()
                                 .requestMatchers("/register").permitAll() //Opens /register url
                                 .requestMatchers("/entries").permitAll() //Opens /register url
 
