@@ -39,6 +39,9 @@ public class BlogController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Blog>> getAllBlog() {
         List<Blog> blogs = blogService.getAll();
+        if (blogs == null) {
+            throw new ResourceNotFoundException("No blogs found");
+        }
         return ResponseEntity.ok(blogs);
     }
 

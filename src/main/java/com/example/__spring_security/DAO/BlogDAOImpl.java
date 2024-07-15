@@ -1,6 +1,7 @@
 package com.example.__spring_security.DAO;
 
 import com.example.__spring_security.entity.Blog;
+import com.example.__spring_security.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,10 @@ public class BlogDAOImpl implements BlogDAO {
     @Override
     public void delete(int id) {
         Blog blog = em.find(Blog.class, id);
+        if(blog==null)
+        {
+            throw new ResourceNotFoundException("Blog not found with id: " + id);
+        }
         em.remove(blog);
 
     }
