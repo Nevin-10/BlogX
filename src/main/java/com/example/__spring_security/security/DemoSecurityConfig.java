@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 
@@ -25,6 +26,13 @@ public class DemoSecurityConfig {
         //Return new, new returns an object..,JdbcUserDetailsManager inbuilt class, return an object of that for using
 
     }
+
+
+        @Bean
+        public RestTemplate restTemplate() {
+            return new RestTemplate();
+        }
+
 
     //Spring Security know exact columns to check, we inject the datasource and return the datasource
 
@@ -67,9 +75,11 @@ public class DemoSecurityConfig {
                                 .permitAll() //Everyone can access the login page,no authorization needed
 
                 )
+
                 .logout(logout -> logout.permitAll())//Expose /logout url for logging out, Spring security gives this.
-                .exceptionHandling(configurer->configurer.accessDeniedPage("/accessDenied"));
+                .exceptionHandling(configurer->configurer.accessDeniedPage("/accessDenied"))
         //Need to post to logout, no need to define in controller.
+        .csrf().disable();
         return http.build();
 
 
