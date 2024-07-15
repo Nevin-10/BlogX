@@ -1,1 +1,1 @@
-https://blogx.azurewebsites.net/
+https://dracox.azurewebsites.net/
