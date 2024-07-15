@@ -1,5 +1,6 @@
 package com.example.__spring_security.service;
 
+import com.example.__spring_security.exception.UserExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 
-//Save the user details in database using User.builder() instead of entityManager.. and save using userDetailsManager.createUser()
+//Save the user details in database using User.builder() instead of entityManager. and save using userDetailsManager.createUser()
 
 @Service
 public class UserService {
@@ -26,6 +27,10 @@ public class UserService {
     }
 
     public void registerUser(String username, String password, String role) {
+
+        if (userDetailsManager.userExists(username)) {
+            throw new UserExistsException("User with username '" + username + "' already exists.");
+        }
         UserDetails user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))

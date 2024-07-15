@@ -2,6 +2,7 @@ package com.example.__spring_security.controller;
 
 import com.example.__spring_security.entity.Blog;
 import com.example.__spring_security.service.BlogService;
+import com.example.__spring_security.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,16 +12,14 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/blog")
-
 public class BlogController {
 
     private final BlogService blogService;
+
     @Autowired
     public BlogController(BlogService blogService) {
         this.blogService = blogService;
     }
-
-    //Controller for accepting blog entry
 
     @PostMapping("/create")
     public ResponseEntity<String> createBlog(@RequestBody Blog blog) {
@@ -30,38 +29,36 @@ public class BlogController {
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Blog> getBlog(@PathVariable int id) {
-        Blog blog=blogService.getBlog(id);
-        if(blog==null) {
-            return ResponseEntity.notFound().build();
-
+        Blog blog = blogService.getBlog(id);
+        if (blog == null) {
+            throw new ResourceNotFoundException("Blog not found with id: " + id);
         }
         return ResponseEntity.ok(blog);
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Blog>> getAllBlog() {
-        List<Blog> blogs=blogService.getAll();
+        List<Blog> blogs = blogService.getAll();
         return ResponseEntity.ok(blogs);
     }
 
     @PostMapping("/update/{id}")
     public ResponseEntity<String> updateBlog(@PathVariable int id, @RequestBody Blog newblog) {
-        Blog blog=blogService.getBlog(id);
-        if(blog!=null) {
+        Blog blog = blogService.getBlog(id);
+        if (blog != null) {
             blog.setEntry(newblog.getEntry());
             blogService.updateBlog(blog);
             return ResponseEntity.ok("Success");
+        } else {
+            throw new ResourceNotFoundException("Blog not found with id: " + id);
         }
-        else{
-            return ResponseEntity.notFound().build();
-        }
-
     }
-
 
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
         blogService.deleteBlog(id);
         return ResponseEntity.ok("Success");
     }
+
+
 }

@@ -24,14 +24,12 @@ public class BlogService {
     }
 
     public Blog getBlog(int id){
-        Blog blog=blogDAO.getBlog(id);
-        return blog;
+        return blogDAO.getBlog(id);
     }
 
 
     public List<Blog> getAll(){
-        List<Blog> blogs=blogDAO.getAll();
-        return blogs;
+        return blogDAO.getAll();
     }
 
     public void deleteBlog(int id){

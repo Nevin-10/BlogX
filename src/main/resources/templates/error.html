@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #cc0033;
+        }
+    </style>
+</head>
+<body>
+<h1>Registration Error</h1>
+<p>User with this username already exists. Please choose a different username.</p>
+<p>Return to <a th:href="@{/}">Login Page</a></p>
+</body>
+</html>
