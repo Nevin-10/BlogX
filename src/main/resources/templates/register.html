@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: linear-gradient(to bottom, #3494e6, #ec6ead); /* Gradient background */
             margin: 0;
             padding: 0;
@@ -92,34 +92,73 @@
         button[type="submit"]:hover {
             background-color: #65d79f; /* Gradient green button on hover */
         }
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            padding: 5px;
+            background-color: #fce4e4;
+            border: 1px solid #e74c3c;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .error-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .error-list li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-<form th:action="@{/register}" method="post">
+<form th:action="@{/register}" th:object="${user}" method="post">
     <h2>Register</h2>
     <div>
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+        <input type="text" id="username" th:field="*{username}" required>
+        <div th:if="${#fields.hasErrors('username')}" class="error-message">
+            <ul class="error-list" th:each="err : ${#fields.errors('username')}">
+                <li th:text="${err}"></li>
+            </ul>
+        </div>
     </div>
     <div>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" th:field="*{password}" required>
+        <div th:if="${#fields.hasErrors('password')}" class="error-message">
+            <ul class="error-list" th:each="err : ${#fields.errors('password')}">
+                <li th:text="${err}"></li>
+            </ul>
+        </div>
     </div>
     <div class="radio-group">
-
-        <input type="radio" id="role_employee" name="role" value="EMPLOYEE" required>
+        <input type="radio" id="role_employee" th:field="*{role}" value="EMPLOYEE" required>
         <label for="role_employee">Employee</label>
-        <input type="radio" id="role_manager" name="role" value="MANAGER">
+        <input type="radio" id="role_manager" th:field="*{role}" value="MANAGER">
         <label for="role_manager">Manager</label>
-        <input type="radio" id="role_admin" name="role" value="ADMIN">
-        <label for="role_admin">BLOG</label>
+        <input type="radio" id="role_admin" th:field="*{role}" value="ADMIN">
+        <label for="role_admin">Admin</label>
     </div>
-
-
+    <div th:if="${#fields.hasErrors('role')}" class="error-message">
+        <ul class="error-list" th:each="err : ${#fields.errors('role')}">
+            <li th:text="${err}"></li>
+        </ul>
+    </div>
     <div>
         <button type="submit">Register</button>
     </div>
-
     <p>
         <a th:href="@{/showLoginForm}">Have an account?</a>
     </p>
